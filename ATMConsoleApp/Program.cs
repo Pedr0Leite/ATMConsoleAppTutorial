@@ -77,19 +77,19 @@ public class cardHolder
 
         void deposit(cardHolder currentUser)
         {
-            Console.WriteLine("How much €€ would you like to deposit?");
+            Console.WriteLine("How much would you like to deposit?");
             double deposit = Double.Parse(Console.ReadLine());
             currentUser.setBalance(deposit + currentUser.getBalance());
-            Console.WriteLine($"Thank you for your €€. Your new balance is: {currentUser.getBalance()}");
+            Console.WriteLine($"Thank you for your deposit. Your new balance is: {currentUser.getBalance()}");
 
         }
 
         void withdraw(cardHolder currentUser)
         {
-            Console.WriteLine("How much €€ would you like to withdraw?");
+            Console.WriteLine("How much would you like to withdraw?");
             double withdrawal = Double.Parse(Console.ReadLine());
 
-            if(currentUser.getBalance() > withdrawal) 
+            if(currentUser.getBalance() < withdrawal) 
             {
             Console.WriteLine("Insuficient Funds....");
             }
@@ -103,7 +103,7 @@ public class cardHolder
 
         void balance(cardHolder currentUser) 
         {
-        Console.WriteLine($"Current balance: {currentUser.getBalance()} €");
+        Console.WriteLine($"Current balance: {currentUser.getBalance()} Euro.");
         }
 
         List<cardHolder> cardHolders = new List<cardHolder>();
@@ -114,6 +114,89 @@ public class cardHolder
         
         //Prompt user
         Console.WriteLine("Welcome to ATM Basic App");
-         
-    }
+        Console.WriteLine("Please insert your debit card: ");
+        String debitCardNum = "";
+        cardHolder currentUser;
+
+        while (true)
+        {
+            try
+            {
+                debitCardNum = Console.ReadLine();
+                currentUser = cardHolders.FirstOrDefault(a => a.cardnum == debitCardNum);
+                if (currentUser != null)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Card not recognized in the System. Please try again or contact our support team.");
+
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Card not recognized in the System. Please try again or contact our support team.");
+
+            }
+        }
+
+            Console.WriteLine("Please enter your pin: ");
+            int userPin = 0;
+            while (true)
+            {
+
+            try
+            {
+                userPin = int.Parse(Console.ReadLine());
+                if (currentUser.getPin() == userPin){ break; }
+                else
+                {
+                    Console.WriteLine("Incorrect pin. Please try again.");
+
+                }
+            }
+            catch
+            {
+                    Console.WriteLine("Incorrect pin. Please try again.");
+            }
+        }
+        Console.WriteLine($"Welcome {currentUser.getFirstName()}");
+        int option = 0;
+        do
+        {
+            printOptions();
+            try
+            {
+                option = int.Parse(Console.ReadLine());
+            }
+            catch
+            {
+
+            }
+
+
+            if (option == 1)
+            {
+                deposit(currentUser);
+            }
+            else if (option == 2)
+            {
+                withdraw(currentUser);
+            }
+            else if (option == 3)
+            {
+                balance(currentUser);
+            }
+            else if (option == 4)
+            {
+                break;
+            }
+            else
+            {
+                option = 0;
+            }
+        } while (option != 4);
+        Console.WriteLine("Thank you, have a nice day!");
+     }
 }
